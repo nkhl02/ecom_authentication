@@ -29,7 +29,7 @@ public class JWTUtil {
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(secretKey, Jwts.SIG.HS256)
-                .compact(),"Bearer",EXPIRATION_TIME/60);
+                .compact(),"Bearer",EXPIRATION_TIME/1000);
 
     }
 

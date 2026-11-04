@@ -32,16 +32,17 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired token");
             return;
         }
-                String jwtToken = authHeader.substring(7);
-                String userName = jwtUtil.extractUsername(jwtToken);
-                String role = jwtUtil.extractRole(jwtToken);
-
-                List<GrantedAuthority> authorities = List.of(
-                        new SimpleGrantedAuthority(
-                                role.startsWith("ROLE_") ? role : "ROLE_" + role
-                        ));
+        String jwtToken = authHeader.substring(7);
 
                 if (jwtUtil.validateToken(jwtToken)) {
+                    String userName = jwtUtil.extractUsername(jwtToken);
+                    String role = jwtUtil.extractRole(jwtToken);
+
+                    List<GrantedAuthority> authorities = List.of(
+                            new SimpleGrantedAuthority(
+                                    role.startsWith("ROLE_") ? role : "ROLE_" + role
+                            ));
+
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userName, null, authorities);
                     SecurityContext context = SecurityContextHolder.createEmptyContext();
                     context.setAuthentication(authentication);
