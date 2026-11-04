@@ -1,7 +1,8 @@
 package com.ecom.authentication.service.impl;
 
-import com.ecom.authentication.dto.LoginRequest;
+import com.ecom.authentication.dto.request.LoginRequest;
 import com.ecom.authentication.dto.UserData;
+import com.ecom.authentication.dto.response.LoginResponse;
 import com.ecom.authentication.service.LoginService;
 import com.ecom.authentication.service.UserClient;
 import com.ecom.authentication.util.JWTUtil;
@@ -21,14 +22,15 @@ public class LoginServiceImpl implements LoginService {
     JWTUtil jwtUtil;
 
     @Override
-    public String generateToken(LoginRequest loginRequest) {
+    public LoginResponse generateToken(LoginRequest loginRequest) {
+
         String rawCredentials = loginRequest.username() + ":" + loginRequest.password();
         String encodedCredentials = Base64.getEncoder()
                 .encodeToString(rawCredentials.getBytes(StandardCharsets.UTF_8));
         String authorization = "Basic " + encodedCredentials;
 
         UserData userData = usersClient.getUserData(authorization);
-
         return jwtUtil.generateToken(userData.username(),userData.role());
+
     }
 }

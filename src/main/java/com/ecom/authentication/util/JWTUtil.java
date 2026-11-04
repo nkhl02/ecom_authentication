@@ -1,6 +1,7 @@
 package com.ecom.authentication.util;
 
 
+import com.ecom.authentication.dto.response.LoginResponse;
 import com.ecom.authentication.entity.Role;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -20,15 +21,16 @@ public class JWTUtil {
     private final String SECRET = "my-super-secret-key-that-is-long-enough-1234567890!@#";
     private final SecretKey secretKey = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    public String generateToken(String userName, Role role) {
+    public LoginResponse generateToken(String userName, Role role) {
 
-        return Jwts.builder()
+        return new LoginResponse(Jwts.builder()
                 .subject(userName)
                 .claim("role", role.name())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(secretKey, Jwts.SIG.HS256)
-                .compact();
+                .compact(),"Bearer",EXPIRATION_TIME/60);
+
     }
 
 

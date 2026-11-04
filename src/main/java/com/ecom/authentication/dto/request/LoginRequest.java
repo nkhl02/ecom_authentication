@@ -1,7 +1,6 @@
-package com.ecom.authentication.dto;
+package com.ecom.authentication.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.NonNull;
 
 public record LoginRequest (@NotBlank String username,
                             @NotBlank String password){
